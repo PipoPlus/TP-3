@@ -12,12 +12,14 @@ public class Cliente {
     }
 
     public Object[] calcularDeudaYPuntosObtenidos() {
+
         Object[] resultado = new Object[2];
         double total = 0;
         int puntosAlquilerFrecuente = 0;
+
         for (Alquiler alquiler : alquileres) {
             double monto = 0;
-// determine amounts for each line
+            // determine amounts for each line
             switch (alquiler.copia().libro().codigoPrecio()) {
                 case Libro.REGULARES:
                     monto += 2;
@@ -34,8 +36,10 @@ public class Cliente {
                     break;
             }
             total += monto;
+
             // sumo puntos por alquiler
             puntosAlquilerFrecuente++;
+
             // bonus por dos días de alquiler de un nuevo lanzamiento
             if ((alquiler.copia().libro().codigoPrecio() == Libro.NUEVO_LANZAMIENTO)
                     && alquiler.diasAlquilados() > 1) {
