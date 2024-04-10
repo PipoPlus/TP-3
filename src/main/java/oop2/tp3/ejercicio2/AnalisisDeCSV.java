@@ -6,8 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class CopiaDeCSV {
+public class AnalisisDeCSV  {
 
 public static List<String[]> copiaDocumento(String direccion) throws IOException {
     List<String[]> csvData = new ArrayList<String[]>();
@@ -28,5 +29,19 @@ public static List<String[]> copiaDocumento(String direccion) throws IOException
 }
 
 
+    public void analisisDeDatos(List<String[]> csvDatan, String clave,AnalisisDeDatos c) {
+
+            List<String[]> results = new ArrayList<String[]>();
+
+            for (String[] csvDatum : csvDatan) {
+                if (c.analisisDeDatos()) {
+                    results.add(csvDatum);
+                }
+            }
+            csvDatan = results;
+
+    }
+
+    public
 
 }

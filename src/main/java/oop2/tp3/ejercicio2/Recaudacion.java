@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static oop2.tp3.ejercicio2.CopiaDeCSV.copiaDocumento;
+import static oop2.tp3.ejercicio2.AnalisisDeCSV.copiaDocumento;
 
 public class Recaudacion {
 
@@ -27,9 +27,9 @@ public class Recaudacion {
         if (options.containsKey("company_name")) {
             List<String[]> results = new ArrayList<String[]>();
 
-            for (int i = 0; i < csvData.size(); i++) {
-                if (csvData.get(i)[1].equals(options.get("company_name"))) {
-                    results.add(csvData.get(i));
+            for (String[] csvDatum : csvData) {
+                if (csvDatum[1].equals(options.get("company_name"))) {
+                    results.add(csvDatum);
                 }
             }
             csvData = results;
