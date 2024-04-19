@@ -13,15 +13,24 @@ public class Main {
         var repo = new PersonaRepository(jdbi);
         var personas = repo.buscarPorNombre("Vla");
 
-        if (personas != null) {
-            for (Persona persona : personas) {
-                System.out.println(persona.nombre() + " " + persona.apellido());
-            }
-        }
-
-        var persona = repo.buscarId(1L);
-        if (persona != null) {
+        for (Persona persona : personas) {
             System.out.println(persona.nombre() + " " + persona.apellido());
         }
+
+
+        var persona = repo.buscarId(1L);
+        persona.ifPresent(p -> System.out.println(p.nombre() + " " + p.apellido()));
+
+        /*
+        "Define una acción para ejecutar con el valor dentro del "Optional", si existe.
+        En este caso, imprime el nombre y apellido de la persona. La expresión lambda recibe un objeto
+        "persona" del tipo contenido en el Optional (en este caso, "Persona") y utiliza sus métodos
+        "nombre()" y "apellido()" para obtener la información necesaria para imprimir."
+
+        Dejo esta nota para mostrar la razon por la cual use este metodo Lambda.
+
+        FUENTE: ChatGPT
+        */
+
     }
 }

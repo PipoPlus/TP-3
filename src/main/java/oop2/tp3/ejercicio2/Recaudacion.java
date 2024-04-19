@@ -5,85 +5,84 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static oop2.tp3.ejercicio2.CopiaDeCSV.copiaDocumento;
 
 public class Recaudacion {
 
+    public static final String COMPANY_NAME = "company_name";
+    public static final String CITY = "city";
+    public static final String STATE = "state";
+    public static final String ROUND = "round";
+    String direccion;
+    private List<String[]> csvData;
 
-    public Recaudacion(){
-
-
+    public Recaudacion(String direccion){
+        this.direccion = direccion;
     }
 
 
-    public  static List<Map<String, String>> where(Map<String, String> options) throws IOException {
+    public List<Map<String, String>> where(Map<String, String> options) throws IOException {
 
 
-        List<String[]> csvData = copiaDocumento("src/main/resources/data.csv");
+        csvData = copiaDocumento(this.direccion);
 
+        if (options.containsKey(COMPANY_NAME)) {
 
+            csvData = filter((fila) -> fila[1].equals(options.get(COMPANY_NAME)));
 
-        if (options.containsKey("company_name")) {
-            List<String[]> results = new ArrayList<String[]>();
-
-            for (int i = 0; i < csvData.size(); i++) {
-                if (csvData.get(i)[1].equals(options.get("company_name"))) {
-                    results.add(csvData.get(i));
-                }
-            }
-            csvData = results;
         }
 
-        if (options.containsKey("city")) {
-            List<String[]> results = new ArrayList<String[]>();
+        if (options.containsKey(CITY)) {
 
-            for (String[] csvDatum : csvData) {
-                if (csvDatum[4].equals(options.get("city"))) {
-                    results.add(csvDatum);
-                }
-            }
-            csvData = results;
+            csvData = filter((fila) -> fila[4].equals(options.get(CITY)));
+
         }
 
-        if (options.containsKey("state")) {
-            List<String[]> results = new ArrayList<String[]>();
+        if (options.containsKey(STATE)) {
 
-            for (String[] csvDatum : csvData) {
-                if (csvDatum[5].equals(options.get("state"))) {
-                    results.add(csvDatum);
-                }
-            }
-            csvData = results;
+            csvData = filter((fila) -> fila[5].equals(options.get(STATE)));
+
         }
 
-        if (options.containsKey("round")) {
-            List<String[]> results = new ArrayList<String[]>();
-
-            for (String[] csvDatum : csvData) {
-                if (csvDatum[9].equals(options.get("round"))) {
-                    results.add(csvDatum);
-                }
-            }
-            csvData = results;
+        if (options.containsKey(ROUND)) {
+            csvData = filter((fila) -> fila[9].equals(options.get(ROUND)));
         }
 
+        return transformToListOfHashMap();
+    }
+
+    private List<Map<String, String>> transformToListOfHashMap() {
         List<Map<String, String>> output = new ArrayList<Map<String, String>>();
 
         for (String[] csvDatum : csvData) {
             Map<String, String> mapped = new HashMap<String, String>();
             mapped.put("permalink", csvDatum[0]);
-            mapped.put("company_name", csvDatum[1]);
+            mapped.put(COMPANY_NAME, csvDatum[1]);
             mapped.put("number_employees", csvDatum[2]);
             mapped.put("category", csvDatum[3]);
-            mapped.put("city", csvDatum[4]);
-            mapped.put("state", csvDatum[5]);
+            mapped.put(CITY, csvDatum[4]);
+            mapped.put(STATE, csvDatum[5]);
             mapped.put("funded_date", csvDatum[6]);
             mapped.put("raised_amount", csvDatum[7]);
             mapped.put("raised_currency", csvDatum[8]);
-            mapped.put("round", csvDatum[9]);
+            mapped.put(ROUND, csvDatum[9]);
             output.add(mapped);
         }
         return output;
+    }
+
+
+    private List<String[]> filter(Predicate<String[]> predicate) {
+        List<String[]> results = new ArrayList<String[]>();
+
+        for (String[] fila : csvData) {
+            if (predicate.test(fila)) {
+                results.add(fila);
+            }
+        }
+
+        return results;
     }
 }
